@@ -1,0 +1,1104 @@
+       <!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>UNO Q ArUco Robotic Car</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <div class="card">
+
+        <h2>UNO Q ArUco Robotic Car Dashboard</h2>
+
+
+        <!-- ================================================= -->
+        <!-- CONNECTION STATUS -->
+        <!-- ================================================= -->
+
+        <div id="status">
+            Connecting to UNO Q...
+        </div>
+
+        <div id="error-container"></div>
+
+
+        <!-- ================================================= -->
+        <!-- TWO COLUMN LAYOUT -->
+        <!-- ================================================= -->
+
+        <div class="tracker-layout">
+
+
+            <!-- ================================================= -->
+            <!-- LEFT COLUMN -->
+            <!-- ================================================= -->
+
+            <div class="left-column">
+
+
+                <!-- ================================================= -->
+                <!-- LIVE CAMERA -->
+                <!-- ================================================= -->
+
+                <h3>Live Camera</h3>
+
+                <div class="video-container">
+
+                    <div id="cameraPlaceholder">
+                        Awaiting video stream...
+                    </div>
+
+                    <img
+                        id="camera"
+                        src=""
+                        alt="ArUco Camera Stream"
+                        style="display: none;"
+                    >
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- CAMERA CONTROLS -->
+                <!-- ================================================= -->
+
+                <h3>Camera Controls</h3>
+
+                <div class="calibration-box">
+
+                    <div
+                        class="label"
+                        style="text-align: left;"
+                    >
+                        Camera Exposure:
+
+                        <span id="exposureValue">
+                            --
+                        </span>
+
+                    </div>
+
+
+                    <input
+                        type="range"
+                        id="exposureSlider"
+                        min="1"
+                        max="5000"
+                        value="10"
+                        style="
+                            width: 100%;
+                            margin-top: 8px;
+                        "
+                    >
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- CURRENT TARGET MARKER POSITION -->
+                <!-- ================================================= -->
+
+                <h3>Current Target Marker Position</h3>
+
+                <div class="metrics-grid">
+
+
+                    <div class="metric">
+
+                        <div class="label">
+                            Marker ID
+                        </div>
+
+                        <div
+                            class="value"
+                            id="marker-id"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <div class="label">
+                            X Position
+                        </div>
+
+                        <div
+                            class="value"
+                            id="room-x"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <div class="label">
+                            Y Position
+                        </div>
+
+                        <div
+                            class="value"
+                            id="room-y"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <div class="label">
+                            Heading
+                        </div>
+
+                        <div
+                            class="value"
+                            id="heading-deg"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <div class="label">
+                            Pixel X
+                        </div>
+
+                        <div
+                            class="value"
+                            id="pos-x"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <div class="label">
+                            Pixel Y
+                        </div>
+
+                        <div
+                            class="value"
+                            id="pos-y"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- RIGHT COLUMN -->
+            <!-- ================================================= -->
+
+            <div class="right-column">
+
+
+                <!-- ================================================= -->
+                <!-- RC CAR MANUAL CONTROL -->
+                <!-- ================================================= -->
+
+                <div
+                    class="calibration-box"
+                    style="margin-top: 0;"
+                >
+
+                    <div
+                        class="label"
+                        style="
+                            font-size: 16px;
+                            color: #ffffff;
+                            font-weight: bold;
+                            margin-bottom: 10px;
+                        "
+                    >
+                        RC Car Manual Control
+                    </div>
+
+
+                    <div
+                        id="car-connection-status"
+                        style="
+                            margin-bottom: 8px;
+                            font-weight: bold;
+                        "
+                    >
+                        RC Car: Waiting...
+                    </div>
+
+
+                    <div
+                        id="car-command-status"
+                        style="
+                            margin-bottom: 15px;
+                            color: #00c8ff;
+                            font-size: 20px;
+                            font-weight: bold;
+                        "
+                    >
+                        Car: STOP
+                    </div>
+
+
+                    <!-- SPEED -->
+
+                    <div
+                        style="
+                            background: #303030;
+                            padding: 12px;
+                            border-radius: 8px;
+                            margin-bottom: 15px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                margin-bottom: 8px;
+                            "
+                        >
+
+                            <span
+                                style="
+                                    color: #ffffff;
+                                    font-weight: bold;
+                                    font-size: 14px;
+                                "
+                            >
+                                RC Car Speed
+                            </span>
+
+
+                            <span
+                                id="speedValue"
+                                style="
+                                    color: #00c8ff;
+                                    font-weight: bold;
+                                    font-size: 18px;
+                                "
+                            >
+                                50%
+                            </span>
+
+                        </div>
+
+
+                        <input
+                            type="range"
+                            id="speedSlider"
+                            min="0"
+                            max="100"
+                            value="50"
+                            step="1"
+                            style="width: 100%;"
+                        >
+
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                font-size: 11px;
+                                color: #aaaaaa;
+                                margin-top: 4px;
+                            "
+                        >
+
+                            <span>0%</span>
+
+                            <span>100%</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- D-PAD -->
+
+                    <div
+                        class="dpad-grid"
+                        style="
+                            display: grid;
+                            grid-template-columns:
+                                repeat(3, 1fr);
+                            gap: 8px;
+                            max-width: 420px;
+                            margin: auto;
+                        "
+                    >
+
+                        <div></div>
+
+                        <button
+                            class="control-btn"
+                            id="btn-forward"
+                            type="button"
+                        >
+                            ▲<br>
+                            FORWARD
+                        </button>
+
+                        <div></div>
+
+
+                        <button
+                            class="control-btn"
+                            id="btn-left"
+                            type="button"
+                        >
+                            ◀ LEFT
+                        </button>
+
+                        <button
+                            class="control-btn stop-btn"
+                            id="btn-stop"
+                            type="button"
+                        >
+                            ■ STOP
+                        </button>
+
+                        <button
+                            class="control-btn"
+                            id="btn-right"
+                            type="button"
+                        >
+                            RIGHT ▶
+                        </button>
+
+
+                        <div></div>
+
+                        <button
+                            class="control-btn"
+                            id="btn-reverse"
+                            type="button"
+                        >
+                            ▼<br>
+                            BACKWARD
+                        </button>
+
+                        <div></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- AUTOMATIC NAVIGATION - STEP 3A -->
+                <!-- ================================================= -->
+
+                <div
+                    class="calibration-box"
+                    style="margin-top: 15px;"
+                >
+
+                    <div
+                        class="label"
+                        style="
+                            font-size: 18px;
+                            color: #ffffff;
+                            font-weight: bold;
+                            margin-bottom: 6px;
+                        "
+                    >
+                        Automatic Navigation
+                    </div>
+
+
+                    <div
+                        style="
+                            color: #ffaa00;
+                            font-size: 13px;
+                            font-weight: bold;
+                            margin-bottom: 15px;
+                        "
+                    >
+                        STEP 3A — NAVIGATION TEST MODE
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- TARGET X -->
+                    <!-- ================================================= -->
+
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns:
+                                1fr 1fr;
+                            gap: 10px;
+                            margin-bottom: 10px;
+                        "
+                    >
+
+                        <div>
+
+                            <div
+                                style="
+                                    color: #ffffff;
+                                    font-size: 13px;
+                                    font-weight: bold;
+                                    margin-bottom: 5px;
+                                "
+                            >
+                                Target X (ft)
+                            </div>
+
+                            <input
+                                id="target-x"
+                                type="number"
+                                step="0.01"
+                                value="0"
+                                style="
+                                    width: 100%;
+                                    box-sizing: border-box;
+                                    padding: 10px;
+                                    background: #202020;
+                                    color: #ffffff;
+                                    border: 1px solid #555;
+                                    border-radius: 6px;
+                                    font-size: 16px;
+                                "
+                            >
+
+                        </div>
+
+
+                        <!-- TARGET Y -->
+
+                        <div>
+
+                            <div
+                                style="
+                                    color: #ffffff;
+                                    font-size: 13px;
+                                    font-weight: bold;
+                                    margin-bottom: 5px;
+                                "
+                            >
+                                Target Y (ft)
+                            </div>
+
+                            <input
+                                id="target-y"
+                                type="number"
+                                step="0.01"
+                                value="0"
+                                style="
+                                    width: 100%;
+                                    box-sizing: border-box;
+                                    padding: 10px;
+                                    background: #202020;
+                                    color: #ffffff;
+                                    border: 1px solid #555;
+                                    border-radius: 6px;
+                                    font-size: 16px;
+                                "
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- GO / STOP -->
+                    <!-- ================================================= -->
+
+                    <div
+                        style="
+                            display: flex;
+                            gap: 10px;
+                            margin-bottom: 15px;
+                        "
+                    >
+
+                        <button
+                            id="go-to-target"
+                            type="button"
+                            style="
+                                flex: 2;
+                                padding: 12px;
+                                background: #00c8ff;
+                                border: none;
+                                border-radius: 6px;
+                                color: #000000;
+                                font-weight: bold;
+                                font-size: 15px;
+                                cursor: pointer;
+                            "
+                        >
+                            GO TO TARGET
+                        </button>
+
+
+                        <button
+                            id="navigation-reset"
+                            type="button"
+                            style="
+                                flex: 1;
+                                padding: 12px;
+                                background: #555555;
+                                border: none;
+                                border-radius: 6px;
+                                color: #ffffff;
+                                font-weight: bold;
+                                font-size: 15px;
+                                cursor: pointer;
+                            "
+                        >
+                            RESET
+                        </button>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- NAVIGATION STATUS -->
+                    <!-- ================================================= -->
+
+                    <div
+                        style="
+                            background: #202020;
+                            padding: 12px;
+                            border-radius: 8px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                color: #00c8ff;
+                                font-weight: bold;
+                                margin-bottom: 10px;
+                                font-size: 15px;
+                            "
+                        >
+                            Navigation Calculation
+                        </div>
+
+
+                        <!-- CURRENT X -->
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 5px 0;
+                            "
+                        >
+
+                            <span>
+                                Current X
+                            </span>
+
+                            <strong id="nav-current-x">
+                                --
+                            </strong>
+
+                        </div>
+
+
+                        <!-- CURRENT Y -->
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 5px 0;
+                            "
+                        >
+
+                            <span>
+                                Current Y
+                            </span>
+
+                            <strong id="nav-current-y">
+                                --
+                            </strong>
+
+                        </div>
+
+
+                        <!-- CURRENT HEADING -->
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 5px 0;
+                            "
+                        >
+
+                            <span>
+                                Current Heading
+                            </span>
+
+                            <strong id="nav-current-heading">
+                                --
+                            </strong>
+
+                        </div>
+
+
+                        <hr
+                            style="
+                                border: 0;
+                                border-top: 1px solid #444;
+                                margin: 8px 0;
+                            "
+                        >
+
+
+                        <!-- TARGET X -->
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 5px 0;
+                            "
+                        >
+
+                            <span>
+                                Target X
+                            </span>
+
+                            <strong id="nav-target-x">
+                                --
+                            </strong>
+
+                        </div>
+
+
+                        <!-- TARGET Y -->
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 5px 0;
+                            "
+                        >
+
+                            <span>
+                                Target Y
+                            </span>
+
+                            <strong id="nav-target-y">
+                                --
+                            </strong>
+
+                        </div>
+
+
+                        <!-- DISTANCE -->
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 5px 0;
+                            "
+                        >
+
+                            <span>
+                                Distance
+                            </span>
+
+                            <strong id="nav-distance">
+                                --
+                            </strong>
+
+                        </div>
+
+
+                        <!-- REQUIRED HEADING -->
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 5px 0;
+                            "
+                        >
+
+                            <span>
+                                Required Heading
+                            </span>
+
+                            <strong id="nav-required-heading">
+                                --
+                            </strong>
+
+                        </div>
+
+
+                        <!-- HEADING ERROR -->
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 5px 0;
+                            "
+                        >
+
+                            <span>
+                                Heading Error
+                            </span>
+
+                            <strong id="nav-heading-error">
+                                --
+                            </strong>
+
+                        </div>
+
+
+                        <!-- PROPOSED COMMAND -->
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                margin-top: 10px;
+                                padding: 10px;
+                                background: #303030;
+                                border-radius: 6px;
+                            "
+                        >
+
+                            <span
+                                style="
+                                    font-weight: bold;
+                                "
+                            >
+                                Would Command
+                            </span>
+
+                            <strong
+                                id="nav-command"
+                                style="
+                                    color: #00ff99;
+                                    font-size: 18px;
+                                "
+                            >
+                                STOP
+                            </strong>
+
+                        </div>
+
+
+                        <!-- AUTO DRIVE STATUS -->
+
+                        <div
+                            id="auto-drive-status"
+                            style="
+                                margin-top: 10px;
+                                text-align: center;
+                                padding: 8px;
+                                border-radius: 6px;
+                                background: #442200;
+                                color: #ffaa00;
+                                font-weight: bold;
+                                font-size: 13px;
+                            "
+                        >
+                            AUTO DRIVE: DISABLED
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- FOUR-STEP CALIBRATION -->
+                <!-- ================================================= -->
+
+                <div
+                    class="calibration-box"
+                    style="margin-top: 15px;"
+                >
+
+                    <div
+                        class="label"
+                        style="
+                            font-size: 16px;
+                            color: #ffffff;
+                            font-weight: bold;
+                            margin-bottom: 8px;
+                        "
+                    >
+                        Four-Step Calibration
+                    </div>
+
+
+                    <div
+                        id="calibration-instruction"
+                        style="
+                            font-size: 14px;
+                            color: #00c8ff;
+                            margin-bottom: 15px;
+                        "
+                    >
+                        Awaiting calibration status...
+                    </div>
+
+
+                    <!-- STEP 1 -->
+
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: space-between;
+                            background: #303030;
+                            padding: 8px 10px;
+                            border-radius: 6px;
+                            margin-bottom: 6px;
+                            font-size: 13px;
+                        "
+                    >
+
+                        <span>
+
+                            Step 1
+
+                            <span
+                                id="step1-position"
+                                style="color: #aaaaaa;"
+                            >
+                                (0,0)
+                            </span>
+
+                        </span>
+
+                        <span
+                            id="step1"
+                            style="font-weight: bold;"
+                        >
+                            Not captured
+                        </span>
+
+                    </div>
+
+
+                    <!-- STEP 2 -->
+
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: space-between;
+                            background: #303030;
+                            padding: 8px 10px;
+                            border-radius: 6px;
+                            margin-bottom: 6px;
+                            font-size: 13px;
+                        "
+                    >
+
+                        <span>
+
+                            Step 2
+
+                            <span
+                                id="step2-position"
+                                style="color: #aaaaaa;"
+                            >
+                                --
+                            </span>
+
+                        </span>
+
+                        <span
+                            id="step2"
+                            style="font-weight: bold;"
+                        >
+                            Not captured
+                        </span>
+
+                    </div>
+
+
+                    <!-- STEP 3 -->
+
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: space-between;
+                            background: #303030;
+                            padding: 8px 10px;
+                            border-radius: 6px;
+                            margin-bottom: 6px;
+                            font-size: 13px;
+                        "
+                    >
+
+                        <span>
+
+                            Step 3
+
+                            <span
+                                id="step3-position"
+                                style="color: #aaaaaa;"
+                            >
+                                --
+                            </span>
+
+                        </span>
+
+                        <span
+                            id="step3"
+                            style="font-weight: bold;"
+                        >
+                            Not captured
+                        </span>
+
+                    </div>
+
+
+                    <!-- STEP 4 -->
+
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: space-between;
+                            background: #303030;
+                            padding: 8px 10px;
+                            border-radius: 6px;
+                            margin-bottom: 15px;
+                            font-size: 13px;
+                        "
+                    >
+
+                        <span>
+
+                            Step 4
+
+                            <span
+                                id="step4-position"
+                                style="color: #aaaaaa;"
+                            >
+                                --
+                            </span>
+
+                        </span>
+
+                        <span
+                            id="step4"
+                            style="font-weight: bold;"
+                        >
+                            Not captured
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display: flex;
+                            gap: 10px;
+                        "
+                    >
+
+                        <button
+                            id="captureButton"
+                            type="button"
+                            style="
+                                flex: 2;
+                                padding: 10px;
+                                background: #00c8ff;
+                                border: none;
+                                border-radius: 6px;
+                                color: #000;
+                                font-weight: bold;
+                                cursor: pointer;
+                            "
+                        >
+                            Capture Position
+                        </button>
+
+
+                        <button
+                            id="resetButton"
+                            type="button"
+                            style="
+                                flex: 1;
+                                padding: 10px;
+                                background: #ff5555;
+                                border: none;
+                                border-radius: 6px;
+                                color: #fff;
+                                font-weight: bold;
+                                cursor: pointer;
+                            "
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="calibration-result"
+                        style="
+                            margin-top: 10px;
+                            font-size: 13px;
+                        "
+                    >
+                        Calibration not complete.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="libs/socket.io.min.js"></script>
+
+    <script src="app.js"></script>
+
+
+</body>
+
+</html>     
